@@ -1,6 +1,6 @@
 # hexfml
 
-Hex + SFML not hex + the acronym fml that has a much different meaning, but definitely reflects the development experience so far.
+Etymology: Hex + SFML not hex + the acronym fml that has a much different meaning, but definitely reflects the development experience so far.
 
 ## Learning outcomes
 - C++
