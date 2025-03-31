@@ -1,24 +1,26 @@
-#include <SFML/Graphics.hpp>
 #include "../include/Board.hpp"
+#include <SFML/Graphics.hpp>
 
 int main() {
-    sf::RenderWindow window({1600, 900}, "hex++", sf::Style::Default, sf::ContextSettings(0, 0, 8));
-    
-    Board board(11, 11, 20, window);
+  unsigned int windowX = 1600;
+  unsigned int windowY = 900;
+  sf::RenderWindow window({windowX, windowY}, "hex++", sf::Style::Default,
+                          sf::ContextSettings(0, 0, 8));
 
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
+  Board board(11, 11, 20, window);
 
-            if (event.type == sf::Event::Resized) {
-                board.updateView(window, event.size.width, event.size.height);
-            }
-        }
+  while (window.isOpen()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed)
+        window.close();
 
-        board.draw(window);
-        window.display();
+      if (event.type == sf::Event::Resized) {
+        board.updateView(window, event.size.width, event.size.height);
+      }
     }
-}
 
+    board.draw(window, windowX, windowY);
+    window.display();
+  }
+}
