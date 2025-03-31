@@ -9,25 +9,45 @@ Hex + SFML not hex + the acronym fml that has a much different meaning, but defi
 
 ## Project structure (WIP)
 /hexfml/
+
 │── /src/
+
 │   ├── main.cpp
+
 │   ├── Game.cpp
+
 │   ├── Game.hpp
+
 │   ├── Board.cpp
+
 │   ├── Board.hpp
+
 │   ├── InputHandler.cpp
+
 │   ├── InputHandler.hpp
+
 │── /include/
+
 │── /assets/
+
 │   ├── textures/
+
 │   ├── fonts/
+
 │   ├── sounds/
+
 │── /shaders/          # TBD
+
 │── /config/           # TBD
+
 │   ├── settings.ini
+
 │── /bin/
+
 │── /obj/
+
 │── Makefile
+
 │── README.md
 
 
