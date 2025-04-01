@@ -23,6 +23,17 @@ Game::Game(Board &board, sf::RenderWindow &window)
     std::cerr << "Error loading piece place sound\n";
   }
   pieceSound.setBuffer(pieceBuffer);
+
+  // Load and play background music
+/*  if (!music.openFromFile(
+          "assets/music/Nick_Roberts_March_to_the_Zenith.ogg")) {
+    std::cerr << "Error loading background music\n";
+  } else {
+     Temp set volume (add to settings later)
+    music.setVolume(50);
+    music.setLoop(true);
+    music.play();
+  }*/
 }
 
 void Game::handleClick(sf::Vector2i mousePosition) {
@@ -66,9 +77,9 @@ void Game::draw(sf::RenderWindow &window) {
       if (boardState[x][y] != 0) {
         // Set texture based on player (1 or 2)
         if (boardState[x][y] == 1) {
-          piece.setTexture(&blackTexture);  // Player 1 (black piece)
+          piece.setTexture(&blackTexture); // Player 1 (black piece)
         } else {
-          piece.setTexture(&whiteTexture);  // Player 2 (white piece)
+          piece.setTexture(&whiteTexture); // Player 2 (white piece)
         }
         piece.setPosition(hexCenters[x][y]);
         window.draw(piece);
@@ -76,4 +87,3 @@ void Game::draw(sf::RenderWindow &window) {
     }
   }
 }
-

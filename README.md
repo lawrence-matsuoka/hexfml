@@ -75,6 +75,9 @@ make clean
 ./bin/hex++
 
 ## Credits
+Music by Nick Roberts
+
 https://opengameart.org/node/21051 for wood texture
 https://www.istockphoto.com/vector/black-metal-texture-background-vector-illustration-gm928819670-254735270
 https://www.istockphoto.com/vector/abstract-gray-and-white-color-gradient-background-vector-illustration-gm1704870086-539106620
+https://opengameart.org/content/different-steps-on-wood-stone-leaves-gravel-and-mud
