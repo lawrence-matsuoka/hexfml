@@ -2,7 +2,9 @@
 #define GAME_HPP
 
 #include "Board.hpp"
+#include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 
 class Game {
@@ -20,6 +22,14 @@ private:
   std::vector<std::vector<int>> boardState;
 
   sf::CircleShape piece;
+  
+  // Textures 
+  sf::Texture blackTexture;
+  sf::Texture whiteTexture;
+
+  // Sounds
+  sf::SoundBuffer pieceBuffer;
+  sf::Sound pieceSound;
 };
 
 #endif
