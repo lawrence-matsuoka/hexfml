@@ -13,7 +13,7 @@ SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 # Output executable
-EXEC = $(BIN_DIR)/hex++
+EXEC = $(BIN_DIR)/hexfml
 
 # Targets
 all: $(EXEC)

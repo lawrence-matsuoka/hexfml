@@ -7,8 +7,15 @@ Game::Game(Board &board, sf::RenderWindow &window)
       columns(board.getHexCenters()[0].size()), radius(board.radius),
       playerTurn(true), boardState(rows, std::vector<int>(columns, 0)) {
   // Set up game piece (circle)
-  piece.setRadius(radius / 2);
-  piece.setOrigin(radius / 2, radius / 2);
+  int pieceRadius = radius / 2;
+  piece.setRadius(pieceRadius);
+  piece.setOrigin(pieceRadius, pieceRadius);
+
+  // Hover effect before placing a piece
+  hoverPiece.setRadius(pieceRadius);
+  hoverPiece.setOrigin(pieceRadius, pieceRadius);
+  hoverPiece.setFillColor(
+      sf::Color(0, 0, 0, 100)); // Initially black, semi-transparent
 
   // Load piece textures
   if (!blackTexture.loadFromFile("assets/textures/reflective-black.jpg")) {
@@ -25,15 +32,15 @@ Game::Game(Board &board, sf::RenderWindow &window)
   pieceSound.setBuffer(pieceBuffer);
 
   // Load and play background music
-/*  if (!music.openFromFile(
-          "assets/music/Nick_Roberts_March_to_the_Zenith.ogg")) {
-    std::cerr << "Error loading background music\n";
-  } else {
-     Temp set volume (add to settings later)
-    music.setVolume(50);
-    music.setLoop(true);
-    music.play();
-  }*/
+  /*  if (!music.openFromFile(
+            "assets/music/Nick_Roberts_March_to_the_Zenith.ogg")) {
+      std::cerr << "Error loading background music\n";
+    } else {
+       Temp set volume (add to settings later)
+      music.setVolume(50);
+      music.setLoop(true);
+      music.play();
+    }*/
 }
 
 void Game::handleClick(sf::Vector2i mousePosition) {
@@ -72,6 +79,35 @@ void Game::handleClick(sf::Vector2i mousePosition) {
 void Game::draw(sf::RenderWindow &window) {
   const auto &hexCenters = board.getHexCenters();
 
+  // Handle hover effect based on mouse position
+  sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+  sf::Vector2f mouseWorldPos = window.mapPixelToCoords(mousePosition);
+  int closestX = -1, closestY = -1;
+  float minDistance = std::numeric_limits<float>::max();
+  for (int x = 0; x < rows; ++x) {
+    for (int y = 0; y < columns; ++y) {
+      sf::Vector2f center = hexCenters[x][y];
+      float distance =
+          std::hypot(mouseWorldPos.x - center.x, mouseWorldPos.y - center.y);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestX = x;
+        closestY = y;
+      }
+    }
+  }
+  // Change colour on player turn
+  hoverPiece.setFillColor(playerTurn ? sf::Color(0, 0, 0, 100)
+                                     : sf::Color(255, 255, 255, 100));
+  // Set the hover piece position to follow the mouse
+  if (closestX >= 0 && closestX < rows && closestY >= 0 && closestY < columns) {
+    hoverPiece.setPosition(hexCenters[closestX][closestY]);
+  }
+  if (boardState[closestX][closestY] == 0) {
+    window.draw(hoverPiece);
+  }
+
+  // Draw the piece
   for (int x = 0; x < rows; ++x) {
     for (int y = 0; y < columns; ++y) {
       if (boardState[x][y] != 0) {

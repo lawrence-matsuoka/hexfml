@@ -5,7 +5,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics.hpp>
-#include <limits>
+//#include <limits>
 #include <vector>
 
 class Game {
@@ -23,6 +23,7 @@ private:
   std::vector<std::vector<int>> boardState;
 
   sf::CircleShape piece;
+  sf::CircleShape hoverPiece;
 
   // Textures
   sf::Texture blackTexture;
