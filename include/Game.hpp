@@ -5,7 +5,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics.hpp>
-//#include <limits>
+#include <limits>
 #include <vector>
 
 class Game {
@@ -35,6 +35,10 @@ private:
 
   // Background music
   sf::Music music;
+
+  // Fonts
+  sf::Font font;
+  sf::Text turnText;
 };
 
 #endif

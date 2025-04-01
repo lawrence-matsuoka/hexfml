@@ -17,6 +17,18 @@ Game::Game(Board &board, sf::RenderWindow &window)
   hoverPiece.setFillColor(
       sf::Color(0, 0, 0, 100)); // Initially black, semi-transparent
 
+  // Load fonts
+  if (!font.loadFromFile("assets/fonts/honeycomb-happiness-font/"
+                         "HoneycombHappiness-ywnRm.ttf")) {
+    std::cerr << "Error loading font\n";
+  }
+  // Set up text properties
+  turnText.setFont(font);
+  turnText.setCharacterSize(50);
+  turnText.setFillColor(sf::Color::Black);
+  turnText.setPosition(20, window.getSize().y - 100); // Bottom-left corner
+  turnText.setString("Black goes first");                // Initial text
+
   // Load piece textures
   if (!blackTexture.loadFromFile("assets/textures/reflective-black.jpg")) {
     std::cerr << "Error loading black pieces texture\n";
@@ -80,7 +92,17 @@ void Game::handleClick(sf::Vector2i mousePosition) {
     boardState[closestX][closestY] = playerTurn ? 1 : 2; // Set player move
     playerTurn = !playerTurn;                            // Switch turns
 
+    // Play wood sound
     pieceSound.play();
+
+    // **Update turn text & color**
+    if (playerTurn) {
+      turnText.setString("Black");
+      turnText.setFillColor(sf::Color::Black); // Black text
+    } else {
+      turnText.setString("White");
+      turnText.setFillColor(sf::Color::White); // White text
+    }
   }
 }
 
@@ -143,4 +165,6 @@ void Game::draw(sf::RenderWindow &window) {
       }
     }
   }
+  // **Draw turn text**
+  window.draw(turnText);
 }
