@@ -44,21 +44,29 @@ Game::Game(Board &board, sf::RenderWindow &window)
 }
 
 void Game::handleClick(sf::Vector2i mousePosition) {
+  // Convert mouse position to world coordinates if the view is scaled
+  sf::Vector2f mouseWorldPos = window.mapPixelToCoords(mousePosition);
+
   const auto &hexCenters = board.getHexCenters();
 
   int closestX = -1, closestY = -1;
   float minDistance = std::numeric_limits<float>::max();
 
-  // Convert mouse position to world coordinates if the view is scaled
-  sf::Vector2f mouseWorldPos = window.mapPixelToCoords(mousePosition);
+  bool isInsideBoard = false; // Track if mouse is inside board bounds
 
   // Find the closest hex center to the mouse click
   for (int x = 0; x < rows; ++x) {
     for (int y = 0; y < columns; ++y) {
       sf::Vector2f center = hexCenters[x][y];
+      // Check if mouse is inside board bounds
+      if (mouseWorldPos.x >= hexCenters[x][y].x - radius &&
+          mouseWorldPos.x <= hexCenters[x][y].x + radius &&
+          mouseWorldPos.y >= hexCenters[x][y].y - radius &&
+          mouseWorldPos.y <= hexCenters[x][y].y + radius) {
+        isInsideBoard = true; // Mouse is inside board
+      }
       float distance =
           std::hypot(mouseWorldPos.x - center.x, mouseWorldPos.y - center.y);
-
       if (distance < minDistance) {
         minDistance = distance;
         closestX = x;
@@ -67,8 +75,8 @@ void Game::handleClick(sf::Vector2i mousePosition) {
     }
   }
   // Check if valid move
-  if (closestX >= 0 && closestX < rows && closestY >= 0 && closestY < columns &&
-      boardState[closestX][closestY] == 0) {
+  if (isInsideBoard && closestX >= 0 && closestX < rows && closestY >= 0 &&
+      closestY < columns && boardState[closestX][closestY] == 0) {
     boardState[closestX][closestY] = playerTurn ? 1 : 2; // Set player move
     playerTurn = !playerTurn;                            // Switch turns
 
@@ -84,9 +92,19 @@ void Game::draw(sf::RenderWindow &window) {
   sf::Vector2f mouseWorldPos = window.mapPixelToCoords(mousePosition);
   int closestX = -1, closestY = -1;
   float minDistance = std::numeric_limits<float>::max();
+
+  bool isInsideBoard = false;
+
   for (int x = 0; x < rows; ++x) {
     for (int y = 0; y < columns; ++y) {
       sf::Vector2f center = hexCenters[x][y];
+      // Check if mouse is inside the board
+      if (mouseWorldPos.x >= hexCenters[x][y].x - radius &&
+          mouseWorldPos.x <= hexCenters[x][y].x + radius &&
+          mouseWorldPos.y >= hexCenters[x][y].y - radius &&
+          mouseWorldPos.y <= hexCenters[x][y].y + radius) {
+        isInsideBoard = true; // Mouse is inside board
+      }
       float distance =
           std::hypot(mouseWorldPos.x - center.x, mouseWorldPos.y - center.y);
       if (distance < minDistance) {
@@ -100,8 +118,11 @@ void Game::draw(sf::RenderWindow &window) {
   hoverPiece.setFillColor(playerTurn ? sf::Color(0, 0, 0, 100)
                                      : sf::Color(255, 255, 255, 100));
   // Set the hover piece position to follow the mouse
-  if (closestX >= 0 && closestX < rows && closestY >= 0 && closestY < columns) {
+  if (isInsideBoard && closestX >= 0 && closestX < rows && closestY >= 0 &&
+      closestY < columns) {
     hoverPiece.setPosition(hexCenters[closestX][closestY]);
+  } else {
+    hoverPiece.setPosition(-100, -100); // Set off screen
   }
   if (boardState[closestX][closestY] == 0) {
     window.draw(hoverPiece);
