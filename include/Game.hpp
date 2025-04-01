@@ -13,6 +13,9 @@ public:
   Game(Board &board, sf::RenderWindow &window);
   void handleClick(sf::Vector2i mousePosition);
   void draw(sf::RenderWindow &window);
+  void resetGame();
+  int checkWinner();
+  void displayWinner(int winner);
 
 private:
   Board &board;
@@ -39,6 +42,8 @@ private:
   // Fonts
   sf::Font font;
   sf::Text turnText;
+
+  bool dfs(int x, int y, int player, std::vector<std::vector<bool>> &visited);
 };
 
 #endif

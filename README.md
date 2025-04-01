@@ -1,6 +1,6 @@
-# hexfml
+# HexFML
 
-Etymology: Hex + SFML not hex + the acronym fml that has a much different meaning, but definitely reflects the development experience so far.
+Etymology: Hex + SFML not hex + the acronym fml that has a much different meaning, but definitely reflects the development experience so far. I really enjoyed the combinatorial game theory class I took this semester and I wanted to try making one of the games we learned about in class. This is not an analysis of Hex in any way.
 
 ## Learning outcomes
 - C++
