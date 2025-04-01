@@ -1,10 +1,13 @@
 #include "../include/Board.hpp"
+#include <SFML/System/Vector2.hpp>
 #include <cmath>
 #include <iostream>
 
 // Constructor: Initializes board and loads texture
 Board::Board(int rows, int columns, float radius, sf::RenderWindow &window)
-    : rows(rows), columns(columns), radius(radius) {
+    : rows(rows), columns(columns), radius(radius),
+      hexCenters(rows,
+                 std::vector<sf::Vector2f>(columns)) { // Initialize hexCenters
 
   // Load wood texture
   if (!woodTexture.loadFromFile("assets/textures/light-wood.jpg")) {
@@ -67,9 +70,10 @@ void Board::draw(sf::RenderWindow &window, unsigned int windowX,
                        0); // position
 
   // Left white border
-  drawBackgroundBorder(
-      window, sf::Color::White, sf::Vector2f(borderX, radius), // size of border
-      sf::Vector2f(initialX + 70, initialY - 1), 60.15);       // position
+  drawBackgroundBorder(window, sf::Color::White,
+                       sf::Vector2f(borderX, radius), // size of border
+                       sf::Vector2f(initialX + 70, initialY - 1),
+                       60.15); // position
   // Right white border
   drawBackgroundBorder(window, sf::Color::White,
                        sf::Vector2f(borderX, radius), // size of border
@@ -78,9 +82,11 @@ void Board::draw(sf::RenderWindow &window, unsigned int windowX,
   //
   for (int y = 0; y < columns; ++y) {
     for (int x = 0; x < rows; ++x) {
-      hexagon.setPosition(initialX + x * gridOffset + shiftGrid,
-                          initialY + y * (gridOffset - (0.25 * radius)));
+      int hexX = initialX + x * gridOffset + shiftGrid;
+      int hexY = initialY + y * (gridOffset - (0.25 * radius));
 
+      hexCenters[x][y] = sf::Vector2f(hexX, hexY);
+      hexagon.setPosition(hexX, hexY);
       window.draw(hexagon);
     }
     shiftGrid += (gridOffset / 2);
@@ -99,4 +105,8 @@ void Board::drawBackgroundBorder(sf::RenderWindow &window, sf::Color color,
   border.setRotation(angle);
 
   window.draw(border);
+}
+
+const std::vector<std::vector<sf::Vector2f>> &Board::getHexCenters() const {
+  return hexCenters;
 }
