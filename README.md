@@ -19,6 +19,9 @@ I am definitely not a front end dev and doing this project only proves to me tha
 
 What a euphoric feeling.
 
+## Depth First Search (DFS)
+
+To automatically determine when there is a winner, we treat the board like a graph and perform the DFS graph traversal algorithm. A fun application of what I learned in Applied Graph Theory last semester. 
 
 ## Project structure (WIP)
 /hexfml/

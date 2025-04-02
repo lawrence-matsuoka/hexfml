@@ -10,6 +10,7 @@
 
 class Game {
 public:
+  void run();
   Game(Board &board, sf::RenderWindow &window);
   void handleClick(sf::Vector2i mousePosition);
   void draw(sf::RenderWindow &window);

@@ -2,6 +2,30 @@
 #include <cmath>
 #include <iostream>
 
+void Game::run() {
+  while (window.isOpen()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed)
+        window.close();
+
+      if (event.type == sf::Event::Resized) {
+        board.updateView(window, event.size.width, event.size.height);
+      }
+
+      if (event.type == sf::Event::MouseButtonPressed &&
+          event.mouseButton.button == sf::Mouse::Left) {
+        handleClick(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+      }
+    }
+
+    //    board.draw(window, window.getSize().x, window.getSize().y);
+    board.draw(window, 1600, 900);
+    draw(window);
+    window.display();
+  }
+}
+
 Game::Game(Board &board, sf::RenderWindow &window)
     : board(board), window(window), rows(board.getHexCenters().size()),
       columns(board.getHexCenters()[0].size()), radius(board.radius),
