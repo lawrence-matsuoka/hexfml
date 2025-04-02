@@ -1,4 +1,6 @@
 #include "../include/Menu.hpp"
+#include "../include/Credits.hpp"
+#include "../include/Settings.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -12,11 +14,11 @@ Menu::Menu(sf::RenderWindow &window) : window(window) {
 
   // Define button labels
   std::vector<std::string> labels = {"Local", "Online", "Settings", "Credits",
-                                     "Exit"};
+                                     "Quit to Desktop"};
 
-  float buttonWidth = 300;
+  float buttonWidth = 320;
   float buttonHeight = 70;
-  float startX = (window.getSize().x - buttonWidth) / 2;
+  float startX = 640;
   float startY = 200;
   float spacing = 100;
 
@@ -37,8 +39,6 @@ Menu::Menu(sf::RenderWindow &window) : window(window) {
     // Center the text in the button
     text.setOrigin(text.getLocalBounds().width / 2,
                    text.getLocalBounds().height / 2);
-    //    text.setPosition(startX + buttonWidth / 2,
-    //                     startY + i * spacing + buttonHeight / 2);
     text.setPosition(startX + buttonWidth / 2,
                      startY + i * spacing + buttonHeight / 2 - 4);
 
@@ -49,19 +49,17 @@ Menu::Menu(sf::RenderWindow &window) : window(window) {
 }
 
 // Show menu and return user selection
-Menu::MenuResult Menu::show() {
+MenuResult Menu::show() {
   while (window.isOpen()) {
     sf::Event event;
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
     sf::Vector2f mouseWorldPos = window.mapPixelToCoords(mousePosition);
     bool mouseOverButton = false;
-
     for (unsigned int i = 0; i < buttons.size(); i++) {
       if (buttons[i].getGlobalBounds().contains(mouseWorldPos.x,
                                                 mouseWorldPos.y)) {
         // Highlight button text on hover
         buttonLabels[i].setFillColor(sf::Color::Yellow); // Highlight color
-
         mouseOverButton = true;
       } else {
         buttonLabels[i].setFillColor(sf::Color::White); // Normal color
@@ -75,7 +73,19 @@ Menu::MenuResult Menu::show() {
       }
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left && mouseOverButton) {
-        return handleClick(mouseWorldPos.x, mouseWorldPos.y);
+        MenuResult result = handleClick(mouseWorldPos.x, mouseWorldPos.y);
+        if (result == Settings) {
+          // Call the settings screen
+          class Settings settings(window);
+          settings.show();
+          return Nothing; // Stay in menu until settings are closed
+        } else if (result == Credits) {
+          // Call the credits screen
+          class Credits credits(window);
+          credits.show();
+          return Nothing; // Stay in menu until credits are closed
+        }
+        return result;
       }
     }
 
@@ -90,7 +100,7 @@ Menu::MenuResult Menu::show() {
 }
 
 // Handle mouse click
-Menu::MenuResult Menu::handleClick(int x, int y) {
+MenuResult Menu::handleClick(int x, int y) {
   for (unsigned int i = 0; i < buttons.size(); i++) {
     if (buttons[i].getGlobalBounds().contains(x, y)) {
       if (i == 0)

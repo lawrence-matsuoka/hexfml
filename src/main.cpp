@@ -12,19 +12,16 @@ int main() {
   Board board(11, 11, 40, window);
   Game game(board, window);
 
-  Menu menu(window);
-  Menu::MenuResult result = menu.show();
-
-  if (result == Menu::Local) { // ✅ If "Local" is clicked, start the game
-    window.close(); // Close the menu window before launching the game
-
-    sf::RenderWindow gameWindow(sf::VideoMode(1600, 900), "hex++ Game",
-                                sf::Style::Default);
-    Board board(11, 11, 40, gameWindow);
-    Game game(board, gameWindow);
-
-    game.run(); // ✅ Runs the game loop inside Game
+  while (window.isOpen()) {
+    Menu menu(window);
+    MenuResult result = menu.show();
+    if (result == Local) { // start the game if "Local" is clicked
+      game.run(); // Runs the game loop
+    }
+    if (result == Exit) {
+      window.close();
+      return 0;
+    }
   }
-
   return 0;
 }

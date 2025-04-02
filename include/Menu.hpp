@@ -4,10 +4,10 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
+enum MenuResult { Nothing, Local, Online, Settings, Credits, Exit };
+
 class Menu {
 public:
-  enum MenuResult { Nothing, Local, Online, Settings, Credits, Exit };
-
   Menu(sf::RenderWindow &window);
   MenuResult show(); // ✅ This function displays the menu and waits for input
 

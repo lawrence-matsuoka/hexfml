@@ -5,18 +5,17 @@
 
 class Settings {
 public:
-  Settings(sf::RenderWindow &window);
-  void run();
+    Settings(sf::RenderWindow &window);
+    void show();
 
 private:
-  sf::RenderWindow &window;
-  sf::Font font;
-  sf::Text muteSound, muteMusic, back;
-  bool soundMuted, musicMuted;
-
-  void drawSettings();
-  void handleMouseClick(sf::Vector2i mousePos);
-  bool isTextClicked(sf::Text &text, sf::Vector2i mousePos);
+    sf::RenderWindow &window;
+    sf::Font font;
+    sf::Text settingsTitle;
+    sf::Text volumeLabel;
+    sf::Text backButton;
+    float volume;
 };
 
 #endif
+
