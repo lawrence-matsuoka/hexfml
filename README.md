@@ -2,6 +2,8 @@
 
 Etymology: Hex + SFML not hex + the acronym fml that has a much different meaning, but definitely reflects the development experience so far. I really enjoyed the combinatorial game theory class I took this semester and I wanted to try making one of the games we learned about in class. This is not an analysis of Hex in any way.
 
+This entire code base is definitely a huge learning experience in C++ and in SFML. There are definitely many areas that are messy and other areas that I didn't realize there was a better way to organize it until I realized much later. I will probably not be going back to improve those areas the code is always free to fork and improve upon. 
+
 ## Learning outcomes
 - C++
 - Game development
@@ -85,3 +87,4 @@ https://www.istockphoto.com/vector/black-metal-texture-background-vector-illustr
 https://www.istockphoto.com/vector/abstract-gray-and-white-color-gradient-background-vector-illustration-gm1704870086-539106620
 https://opengameart.org/content/different-steps-on-wood-stone-leaves-gravel-and-mud
 font from https://www.fontspace.com/honeycomb-happiness-font-f70260. Honeycomb Happiness
+https://opengameart.org/content/menu-selection-click

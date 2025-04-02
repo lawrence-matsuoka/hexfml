@@ -1,6 +1,7 @@
 #include "../include/Menu.hpp"
 #include "../include/Credits.hpp"
 #include "../include/Settings.hpp"
+#include "../include/Sounds.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -73,6 +74,7 @@ MenuResult Menu::show() {
       }
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left && mouseOverButton) {
+        Sounds::playSound("click");
         MenuResult result = handleClick(mouseWorldPos.x, mouseWorldPos.y);
         if (result == Settings) {
           // Call the settings screen

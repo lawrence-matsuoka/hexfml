@@ -1,4 +1,5 @@
 #include "../include/Game.hpp"
+#include "../include/PauseMenu.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -6,28 +7,53 @@ void Game::run() {
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed)
+      if (event.type == sf::Event::Closed) {
         window.close();
-
+      }
       if (event.type == sf::Event::Resized) {
         board.updateView(window, event.size.width, event.size.height);
       }
-
+      if (event.type == sf::Event::KeyPressed &&
+          event.key.code == sf::Keyboard::Escape) {
+        // Set the game to paused and return to the pause menu
+        gamePaused = !gamePaused;
+        // return;
+      }
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left) {
         handleClick(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
       }
     }
 
-    //    board.draw(window, window.getSize().x, window.getSize().y);
-    board.draw(window, 1600, 900);
-    draw(window);
-    window.display();
+    if (gamePaused) {
+      // Show the pause menu when the game is paused
+      PauseMenuResult result = pauseMenu.show();
+      // Handle the result of the pause menu (resume, settings, etc.)
+      if (result == PauseMenuResult::Resume) {
+        gamePaused = false;
+      } else if (result == PauseMenuResult::QuitToMenu) {
+        resetGame();
+        gamePaused = !gamePaused;
+        return;
+      } else if (result == PauseMenuResult::QuitToDesktop) {
+        window.close();
+      }
+    } else {
+      //    board.draw(window, window.getSize().x, window.getSize().y);
+      board.draw(window, 1600, 900);
+      draw(window);
+      window.display();
+    }
   }
 }
 
 Game::Game(Board &board, sf::RenderWindow &window)
-    : board(board), window(window), rows(board.getHexCenters().size()),
+    : board(board), window(window),
+      pauseMenu(window, {"Resume", "Quit to Menu", "Quit to Desktop"},
+                {[this]() { return PauseMenuResult::Resume; },
+                 [this]() { return PauseMenuResult::QuitToMenu; },
+                 [this]() { return PauseMenuResult::QuitToDesktop; }}),
+      rows(board.getHexCenters().size()),
       columns(board.getHexCenters()[0].size()), radius(board.radius),
       playerTurn(true), boardState(rows, std::vector<int>(columns, 0)) {
   // Set up game piece (circle)

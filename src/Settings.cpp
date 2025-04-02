@@ -1,4 +1,5 @@
 #include "../include/Settings.hpp"
+#include "../include/Sounds.hpp"
 #include <iostream>
 
 Settings::Settings(sf::RenderWindow &window) : window(window), volume(50.f) {
@@ -47,6 +48,7 @@ void Settings::show() {
         return;
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left) {
+        Sounds::playSound("click");
         if (isHovered) {
           return; // Exit settings screen
         }

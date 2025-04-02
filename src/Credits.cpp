@@ -1,4 +1,5 @@
 #include "../include/Credits.hpp"
+#include "../include/Sounds.hpp"
 #include <iostream>
 
 Credits::Credits(sf::RenderWindow &window) : window(window) {
@@ -35,6 +36,7 @@ void Credits::show() {
         return;
       if (event.type == sf::Event::MouseButtonPressed &&
           event.mouseButton.button == sf::Mouse::Left) {
+        Sounds::playSound("click");
         if (isHovered) {
           return; // Exit settings screen
         }

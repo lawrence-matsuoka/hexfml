@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "Board.hpp"
+#include "PauseMenu.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics.hpp>
@@ -12,6 +13,7 @@ class Game {
 public:
   void run();
   Game(Board &board, sf::RenderWindow &window);
+  bool gamePaused = false;
   void handleClick(sf::Vector2i mousePosition);
   void draw(sf::RenderWindow &window);
   void resetGame();
@@ -21,6 +23,7 @@ public:
 private:
   Board &board;
   sf::RenderWindow &window;
+  PauseMenu pauseMenu;
   int rows, columns;
   float radius;
   bool playerTurn; // true = Player 1, false = Player 2
