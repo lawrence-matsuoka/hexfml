@@ -38,12 +38,17 @@ int main() {
   Sounds::loadSounds();
 
   while (window.isOpen()) {
+    // Play music
+    Sounds::playMusic();
     MenuResult result = mainMenu.show();
     if (result == Local) {
+      // Play music
+      Sounds::playMusic();
       gamePaused = false;
       game.run(); // Start the game
     }
     if (result == Exit) {
+      Sounds::stopMusic();
       window.close();
       return 0;
     }

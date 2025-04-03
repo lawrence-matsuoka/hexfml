@@ -2,16 +2,31 @@
 #include <iostream>
 
 // Define static variables
+sf::Music Sounds::backgroundMusic;
 std::map<std::string, sf::SoundBuffer> Sounds::soundBuffers;
 std::map<std::string, sf::Sound> Sounds::sounds;
+
+void Sounds::playMusic() {
+  if (!backgroundMusic.openFromFile(
+          "assets/music/Nick-Roberts_ph1l0s0phy.ogg")) {
+    std::cerr << "Error loading background music" << std::endl;
+    return;
+  }
+
+  backgroundMusic.setLoop(true); // Set the music to loop indefinitely
+  backgroundMusic.setVolume(50); // Optionally set the volume (0 to 100 scale)
+  backgroundMusic.play();        // Start playing the music
+}
+void Sounds::stopMusic() {
+  backgroundMusic.stop(); // Stops the music when called
+}
 
 // Load all sound effects
 void Sounds::loadSounds() {
   // List of sounds to load
   std::map<std::string, std::string> soundFiles = {
       {"click", "assets/sounds/click.wav"},
-      {"piece", "assets/sounds/wood03.ogg"}
-  };
+      {"piece", "assets/sounds/wood03.ogg"}};
 
   // Load sounds into buffers
   for (const auto &[name, file] : soundFiles) {

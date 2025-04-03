@@ -7,6 +7,10 @@
 
 class Sounds {
 public:
+  // Music
+  static void playMusic();
+  static void stopMusic();
+
   // Load all sound effects
   static void loadSounds();
 
@@ -14,8 +18,9 @@ public:
   static void playSound(const std::string &soundName);
 
 private:
+  static sf::Music backgroundMusic;
   static std::map<std::string, sf::SoundBuffer> soundBuffers;
   static std::map<std::string, sf::Sound> sounds;
 };
 
-#endif 
+#endif
