@@ -2,6 +2,7 @@
 #include "../include/Board.hpp"
 #include "../include/Game.hpp"
 #include "../include/Menu.hpp"
+#include "../include/OnlineMenu.hpp"
 #include "../include/PauseMenu.hpp"
 #include "../include/Settings.hpp"
 #include <SFML/Graphics.hpp>
@@ -25,8 +26,8 @@ int main() {
       [&]() {
         gamePaused = false;
         return PauseMenuResult::Resume;
-      },                                             // Resume
-      [&]() { return PauseMenuResult::QuitToMenu; }, // Quit to Menu
+      },
+      [&]() { return PauseMenuResult::QuitToMenu; },
       [&]() {
         window.close();
         return PauseMenuResult::QuitToDesktop;
@@ -50,6 +51,10 @@ int main() {
       Sounds::playMusic();
       gamePaused = false;
       game.run(); // Start the game
+    }
+    if (result == Online) {
+      OnlineMenu onlineMenu(window);
+      onlineMenu.show();
     }
     if (result == Exit) {
       Sounds::stopMusic();
