@@ -1,7 +1,7 @@
 #include "../include/Menu.hpp"
 #include "../include/Credits.hpp"
 #include "../include/Settings.hpp"
-#include "../include/Sounds.hpp"
+#include "../include/Audio.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 

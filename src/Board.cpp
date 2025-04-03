@@ -6,8 +6,7 @@
 // Constructor: Initializes board and loads texture
 Board::Board(int rows, int columns, float radius, sf::RenderWindow &window)
     : rows(rows), columns(columns), radius(radius),
-      hexCenters(rows,
-                 std::vector<sf::Vector2f>(columns)) { // Initialize hexCenters
+      hexCenters(rows, std::vector<sf::Vector2f>(columns)) {
 
   // Load wood texture
   if (!woodTexture.loadFromFile("assets/textures/light-wood.jpg")) {
@@ -32,7 +31,6 @@ void Board::updateView(sf::RenderWindow &window, int newWidth, int newHeight) {
   float aspectRatio =
       static_cast<float>(newWidth) / static_cast<float>(newHeight);
   view.setSize(900 * aspectRatio, 900);
-  //  view.zoom(0.8f); // 0.55*/
   window.setView(view);
 }
 
@@ -44,7 +42,6 @@ void Board::draw(sf::RenderWindow &window, unsigned int windowX,
   int boardX = 3 * radius * rows - radius;
   int boardY = 2 * radius * columns;
   int initialX = (windowX - boardX) / 2;
-  // board length = (2 * radius * columns)
   int initialY = (windowY - boardY) + 3 * radius;
 
   int gridOffset = 1.775 * radius;
@@ -98,9 +95,6 @@ void Board::drawBackgroundBorder(sf::RenderWindow &window, sf::Color color,
                                  float angle) {
   sf::RectangleShape border(size); // Simple rectangle
   border.setFillColor(color);
-
-  // Set position, rotation, and center for proper rotation
-  // border.setOrigin(size.x / 2, size.y / 2); // Center origin for proper
   border.setPosition(position);
   border.setRotation(angle);
 

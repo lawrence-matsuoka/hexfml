@@ -1,5 +1,5 @@
 #include "../include/Settings.hpp"
-#include "../include/Sounds.hpp"
+#include "../include/Audio.hpp"
 #include <iostream>
 
 Settings::Settings(sf::RenderWindow &window) : window(window), volume(50.f) {
@@ -7,11 +7,6 @@ Settings::Settings(sf::RenderWindow &window) : window(window), volume(50.f) {
                          "HoneycombHappiness-ywnRm.ttf")) {
     std::cerr << "Error loading font" << std::endl;
   }
-
-  //    text.setOrigin(text.getLocalBounds().width / 2,
-  //                   text.getLocalBounds().height / 2);
-  //    text.setPosition(startX + buttonWidth / 2,
-  //                     startY + i * spacing + buttonHeight / 2 - 4);
 
   settingsTitle.setFont(font);
   settingsTitle.setString("Settings");

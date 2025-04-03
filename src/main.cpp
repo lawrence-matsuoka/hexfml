@@ -1,8 +1,8 @@
+#include "../include/Audio.hpp"
 #include "../include/Board.hpp"
 #include "../include/Game.hpp"
 #include "../include/Menu.hpp"
 #include "../include/PauseMenu.hpp"
-#include "../include/Sounds.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <iostream>
@@ -25,7 +25,6 @@ int main() {
         gamePaused = false;
         return PauseMenuResult::Resume;
       },                                             // Resume
-      [&]() { return PauseMenuResult::Settings; },   // Settings
       [&]() { return PauseMenuResult::QuitToMenu; }, // Quit to Menu
       [&]() {
         window.close();
@@ -49,6 +48,6 @@ int main() {
       return 0;
     }
   }
-  
+
   return 0;
 }

@@ -1,5 +1,5 @@
-#ifndef SOUNDS_HPP
-#define SOUNDS_HPP
+#ifndef AUDIO_HPP
+#define AUDIO_HPP
 
 #include <SFML/Audio.hpp>
 #include <map>
@@ -18,4 +18,4 @@ private:
   static std::map<std::string, sf::Sound> sounds;
 };
 
-#endif // SOUNDS_HPP
+#endif 

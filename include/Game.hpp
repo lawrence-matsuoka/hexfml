@@ -28,6 +28,7 @@ private:
   float radius;
   bool playerTurn; // true = Player 1, false = Player 2
   std::vector<std::vector<int>> boardState;
+  bool quitToMenu = false;
 
   sf::CircleShape piece;
   sf::CircleShape hoverPiece;
@@ -35,13 +36,6 @@ private:
   // Textures
   sf::Texture blackTexture;
   sf::Texture whiteTexture;
-
-  // Sounds
-  sf::SoundBuffer pieceBuffer;
-  sf::Sound pieceSound;
-
-  // Background music
-  sf::Music music;
 
   // Fonts
   sf::Font font;

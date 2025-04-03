@@ -1,4 +1,4 @@
-#include "../include/Sounds.hpp"
+#include "../include/Audio.hpp"
 #include <iostream>
 
 // Define static variables
@@ -9,7 +9,9 @@ std::map<std::string, sf::Sound> Sounds::sounds;
 void Sounds::loadSounds() {
   // List of sounds to load
   std::map<std::string, std::string> soundFiles = {
-      {"click", "assets/sounds/click.wav"}};
+      {"click", "assets/sounds/click.wav"},
+      {"piece", "assets/sounds/wood03.ogg"}
+  };
 
   // Load sounds into buffers
   for (const auto &[name, file] : soundFiles) {

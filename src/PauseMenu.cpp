@@ -1,5 +1,5 @@
 #include "../include/PauseMenu.hpp"
-#include "../include/Sounds.hpp"
+#include "../include/Audio.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -52,8 +52,7 @@ PauseMenuResult PauseMenu::handleClick(int x, int y) {
       return actions[i](); // Call the corresponding action function
     }
   }
-  return PauseMenuResult::Resume; // Default action if clicked outside of the
-                                  // menu
+  return PauseMenuResult::Resume; // Default action
 }
 
 PauseMenuResult PauseMenu::show() {
@@ -93,8 +92,7 @@ PauseMenuResult PauseMenu::show() {
     }
 
     window.clear();
-    window.draw(
-        background); // Draw the semi-transparent background to fade the screen
+    window.draw(background);
     for (auto &button : buttons)
       window.draw(button);
     for (auto &text : buttonLabels)
@@ -102,6 +100,5 @@ PauseMenuResult PauseMenu::show() {
     window.display();
   }
 
-  return PauseMenuResult::Resume; // Default action if the menu is somehow
-                                  // closed
+  return PauseMenuResult::Resume; // Default action
 }

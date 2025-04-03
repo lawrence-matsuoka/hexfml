@@ -24,4 +24,4 @@ public:
   const std::vector<std::vector<sf::Vector2f>> &getHexCenters() const;
 };
 
-#endif // BOARD_HPP
+#endif
