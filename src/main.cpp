@@ -3,6 +3,7 @@
 #include "../include/Game.hpp"
 #include "../include/Menu.hpp"
 #include "../include/PauseMenu.hpp"
+#include "../include/Settings.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <iostream>
@@ -37,12 +38,15 @@ int main() {
 
   Sounds::loadSounds();
 
+  class Settings settings(window);
+  settings.loadSettings();
+
   while (window.isOpen()) {
     // Play music
     Sounds::playMusic();
     MenuResult result = mainMenu.show();
     if (result == Local) {
-      // Play music
+      game.resetGame();
       Sounds::playMusic();
       gamePaused = false;
       game.run(); // Start the game

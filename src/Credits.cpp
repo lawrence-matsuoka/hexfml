@@ -38,7 +38,7 @@ void Credits::show() {
           event.mouseButton.button == sf::Mouse::Left) {
         Sounds::playSound("click");
         if (isHovered) {
-          return; 
+          return;
         }
       }
     }

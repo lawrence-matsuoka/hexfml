@@ -9,15 +9,14 @@ enum MenuResult { Nothing, Local, Online, Settings, Credits, Exit };
 class Menu {
 public:
   Menu(sf::RenderWindow &window);
-  MenuResult show(); 
+  MenuResult show();
 
 private:
   sf::RenderWindow &window;
-  std::vector<sf::RectangleShape> buttons; 
-  std::vector<sf::Text> buttonLabels;     
+  std::vector<sf::RectangleShape> buttons;
+  std::vector<sf::Text> buttonLabels;
   sf::Font font;
   MenuResult handleClick(int x, int y);
 };
 
 #endif
-

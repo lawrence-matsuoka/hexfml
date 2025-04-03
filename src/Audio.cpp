@@ -6,6 +6,20 @@ sf::Music Sounds::backgroundMusic;
 std::map<std::string, sf::SoundBuffer> Sounds::soundBuffers;
 std::map<std::string, sf::Sound> Sounds::sounds;
 
+static float soundVolume = 50.f; // Default sound volume
+static float musicVolume = 50.f; // Default music volume
+
+void Sounds::setSoundVolume(float volume) {
+  soundVolume = volume;
+  for (auto &sound : sounds) {
+    sound.second.setVolume(soundVolume); // Set volume for each sound
+  }
+}
+void Sounds::setMusicVolume(float volume) {
+  musicVolume = volume;
+  backgroundMusic.setVolume(musicVolume); // Set volume for music
+}
+
 void Sounds::playMusic() {
   if (!backgroundMusic.openFromFile(
           "assets/music/Nick-Roberts_ph1l0s0phy.ogg")) {
@@ -14,8 +28,9 @@ void Sounds::playMusic() {
   }
 
   backgroundMusic.setLoop(true); // Set the music to loop indefinitely
-  backgroundMusic.setVolume(50); // Optionally set the volume (0 to 100 scale)
-  backgroundMusic.play();        // Start playing the music
+  backgroundMusic.setVolume(
+      musicVolume);       // Optionally set the volume (0 to 100 scale)
+  backgroundMusic.play(); // Start playing the music
 }
 void Sounds::stopMusic() {
   backgroundMusic.stop(); // Stops the music when called

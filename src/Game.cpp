@@ -400,4 +400,6 @@ void Game::resetGame() {
   playerTurn = true;
   turnText.setString("Black's turn");
   turnText.setFillColor(sf::Color::Black);
+  // Reset quitToMenu
+  quitToMenu = false;
 }

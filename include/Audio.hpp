@@ -17,6 +17,9 @@ public:
   // Play a specific sound effect
   static void playSound(const std::string &soundName);
 
+  static void setSoundVolume(float volume);
+  static void setMusicVolume(float volume);
+
 private:
   static sf::Music backgroundMusic;
   static std::map<std::string, sf::SoundBuffer> soundBuffers;
