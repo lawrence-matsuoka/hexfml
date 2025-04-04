@@ -1,5 +1,7 @@
 # HexFML
 
+[Hex](https://en.wikipedia.org/wiki/Hex_(board_game)) is a finite, 2-player perfect information game, and an abstract strategy game. Players attempt to connect opposite sides of a (traditionally) 11x11 rhombus-shaped board made of hexagonal cells. This an application where you can play Hex written in C++ using SFML.
+
 The etymology behind HexFML has nothing to do with the acronym fml and it's meaning that you may or may not know (but it would reflect my dev experience throughout this learning experience). The name is derived from Hex + SFML and combined into HexFML. I really enjoyed my combinatorial game theory class this semester and I want to explore C++ applications such as embedded and game dev, so I decided to recreate the board game Hex. This was one of the games we studied in class and my prof's "addiction", so it seemed like a suitable candidate. 
 
 Disclaimer: This is by no means an analysis of Hex and certainly the messiest code C++ code me or anyone else has ever written.
@@ -32,6 +34,10 @@ To automatically determine when there is a winner, we treat the board like a gra
 ![Completed local game](docs/goal1.png)
 
 Several types of menus, some sounds effects, textures, and lots of refinement later... I think I have a "complete" game where people can now play this locally and it seems to work pretty well. I've got music and sound sliders that persist, a pause menu, and the gameplay which has been functional for a while. I'm very happy with how it has turned out so far. But I do have a feeling that getting into the networking and making this game online compatible will be the most challenging part.
+
+## Online
+
+Now it's time for what I anticipated to be the most challenging part, which seems daunting since everything leading up to this point was a struggle. I want to implement Peer-to-Peer capabilities where players will either be able to host/join games with people using their IP address. This will use SFML's sockets from their networking library, and I am thankful that I have played around with sockets and networking before so this is at least not completely new to me. 
 
 ## Build
 

@@ -18,6 +18,8 @@ private:
   sf::RenderWindow &window;
   sf::Font font;
   sf::Text ipAddressText;
+  sf::Text portText;
+  sf::Text portLink;
   sf::Text hostButtonLabel;
   sf::Text joinButtonLabel;
   sf::Text backButtonLabel;

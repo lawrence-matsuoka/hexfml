@@ -20,6 +20,20 @@ OnlineMenu::OnlineMenu(sf::RenderWindow &window)
   ipAddressText.setPosition(100,
                             100); // Position the text at the top of the screen
 
+  // Set up Port text (Below IP)
+  portText.setFont(font);
+  portText.setString("Default Port: 54000");
+  portText.setCharacterSize(20);
+  portText.setFillColor(sf::Color::White);
+  portText.setPosition(100, 140);
+
+  // Set up Port Forwarding "Link"
+  portLink.setFont(font);
+  portLink.setString("How to Port Forward?");
+  portLink.setCharacterSize(20);
+  portLink.setFillColor(sf::Color::White);
+  portLink.setPosition(100, 160);
+
   // Host button setup
   hostButton.setSize(sf::Vector2f(320, 70));
   hostButton.setFillColor(sf::Color(100, 150, 100));
@@ -87,6 +101,7 @@ void OnlineMenu::show() {
     hostButtonLabel.setFillColor(sf::Color::White); // Default color
     joinButtonLabel.setFillColor(sf::Color::White);
     backButtonLabel.setFillColor(sf::Color::White);
+    portLink.setFillColor(sf::Color::White);
 
     if (hostButton.getGlobalBounds().contains(mouseWorldPos.x,
                                               mouseWorldPos.y)) {
@@ -102,6 +117,9 @@ void OnlineMenu::show() {
                                               mouseWorldPos.y)) {
       backButtonLabel.setFillColor(
           sf::Color::Yellow); // Hover color for Back button
+    }
+    if (portLink.getGlobalBounds().contains(mouseWorldPos.x, mouseWorldPos.y)) {
+      portLink.setFillColor(sf::Color::Yellow); // Hover color for Back button
     }
 
     while (window.pollEvent(event)) {
@@ -147,6 +165,8 @@ void OnlineMenu::show() {
 
       window.clear(sf::Color(85, 115, 85)); // Sage green background
       window.draw(ipAddressText);
+      window.draw(portText);
+      window.draw(portLink);
       window.draw(hostButton);
       window.draw(joinButton);
       window.draw(backButton);
@@ -175,6 +195,15 @@ void OnlineMenu::handleButtonClicks(int x, int y) {
               << ipFieldText.getString().toAnsiString() << std::endl;
   } else if (backButton.getGlobalBounds().contains(x, y)) {
     backPressed = true;
+  } else if (portLink.getGlobalBounds().contains(x, y)) {
+// Open the port forwarding link in browser
+#ifdef _WIN32
+    system("start https://portforward.com/");
+#elif __APPLE__
+    system("open https://portforward.com/");
+#elif __linux__
+    system("xdg-open https://portforward.com/");
+#endif
   }
 }
 
