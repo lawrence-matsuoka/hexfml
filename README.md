@@ -39,6 +39,10 @@ Several types of menus, some sounds effects, textures, and lots of refinement la
 
 Now it's time for what I anticipated to be the most challenging part, which seems daunting since everything leading up to this point was a struggle. I want to implement Peer-to-Peer capabilities where players will either be able to host/join games with people using their IP address. This will use SFML's sockets from their networking library, and I am thankful that I have played around with sockets and networking before so this is at least not completely new to me. 
 
+![Very buggy incomplete (but working! At least using loopback)](docs/online-loopback.png)
+
+The first iteration of online. Incredibly buggy and unpolished, but functional! I tested this using loopback (127.0.0.1), so who knows how it would behave if I were playing with someone outside of my network, but that's what first iterations are for. 
+
 ## Build
 
 This will be tested later on other platforms. Development was done on PopOS which is based on Ubuntu 22.04. The only package I did not have previously that I had to download was libsfml-dev.
