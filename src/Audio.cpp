@@ -41,7 +41,7 @@ void Sounds::loadSounds() {
   // List of sounds to load
   std::map<std::string, std::string> soundFiles = {
       {"click", "assets/sounds/click.wav"},
-      {"piece", "assets/sounds/wood03.ogg"}};
+      {"piece", "assets/sounds/edited-wood03.ogg"}};
 
   // Load sounds into buffers
   for (const auto &[name, file] : soundFiles) {

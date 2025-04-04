@@ -1,6 +1,7 @@
 #ifndef ONLINE_MENU_HPP
 #define ONLINE_MENU_HPP
 
+#include "Peer.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <functional>
@@ -13,6 +14,7 @@ public:
   void show();
   void handleButtonClicks(int x, int y);
   void updateIPText();
+  void runOnlineGame(Peer &peer);
 
 private:
   sf::RenderWindow &window;

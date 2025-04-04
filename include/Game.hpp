@@ -2,10 +2,12 @@
 #define GAME_HPP
 
 #include "Board.hpp"
+#include "Move.hpp"
 #include "PauseMenu.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics.hpp>
+#include <functional>
 #include <limits>
 #include <vector>
 
@@ -19,6 +21,31 @@ public:
   void resetGame();
   int checkWinner();
   void displayWinner(int winner);
+
+  struct Move {
+    int x;
+    int y;
+
+    // Serialize this move into a packet
+    sf::Packet toPacket() const {
+      sf::Packet packet;
+      packet << x << y;
+      return packet;
+    }
+
+    // Deserialize a packet into a Move
+    static Move fromPacket(sf::Packet &packet) {
+      Move move;
+      packet >> move.x >> move.y;
+      return move;
+    }
+  };
+
+  Move getMove();
+  void applyMove(const Move &);
+  bool isGameOver();
+  sf::RenderWindow &getWindow();
+  void draw();
 
 private:
   Board &board;

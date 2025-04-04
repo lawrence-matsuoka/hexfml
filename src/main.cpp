@@ -2,9 +2,9 @@
 #include "../include/Board.hpp"
 #include "../include/Game.hpp"
 #include "../include/Menu.hpp"
-#include "../include/OnlineMenu.hpp"
 #include "../include/PauseMenu.hpp"
 #include "../include/Settings.hpp"
+#include "../include/OnlineMenu.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <iostream>

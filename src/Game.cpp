@@ -1,6 +1,5 @@
 #include "../include/Game.hpp"
 #include "../include/Audio.hpp"
-#include "../include/Menu.hpp"
 #include "../include/PauseMenu.hpp"
 #include <cmath>
 #include <iostream>
@@ -57,7 +56,8 @@ Game::Game(Board &board, sf::RenderWindow &window)
                  [this]() { return PauseMenuResult::QuitToDesktop; }}),
       rows(board.getHexCenters().size()),
       columns(board.getHexCenters()[0].size()), radius(board.radius),
-      playerTurn(true), boardState(rows, std::vector<int>(columns, 0)) {
+      playerTurn(true), boardState(rows, std::vector<int>(columns, 0)),
+      quitToMenu(false) {
   // Set up game piece
   int pieceRadius = radius / 2;
   piece.setRadius(pieceRadius);
@@ -187,7 +187,11 @@ void Game::draw(sf::RenderWindow &window) {
   } else {
     hoverPiece.setPosition(-100, -100); // Set off screen
   }
-  if (boardState[closestX][closestY] == 0) {
+  // if (boardState[closestX][closestY] == 0) {
+  //   window.draw(hoverPiece);
+  // }
+  if (closestX >= 0 && closestX < rows && closestY >= 0 && closestY < columns &&
+      boardState[closestX][closestY] == 0) {
     window.draw(hoverPiece);
   }
 
@@ -403,3 +407,75 @@ void Game::resetGame() {
   // Reset quitToMenu
   quitToMenu = false;
 }
+
+// Online
+Game::Move Game::getMove() {
+  const auto &hexCenters = board.getHexCenters();
+
+  while (true) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) {
+        window.close();
+        return Move{-1, -1}; // Special case
+      }
+
+      if (event.type == sf::Event::MouseButtonPressed &&
+          event.mouseButton.button == sf::Mouse::Left) {
+        sf::Vector2f mouseWorldPos =
+            window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
+
+        int closestX = -1, closestY = -1;
+        float minDistance = std::numeric_limits<float>::max();
+
+        for (int x = 0; x < rows; ++x) {
+          for (int y = 0; y < columns; ++y) {
+            sf::Vector2f center = hexCenters[x][y];
+            float distance = std::hypot(mouseWorldPos.x - center.x,
+                                        mouseWorldPos.y - center.y);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestX = x;
+              closestY = y;
+            }
+          }
+        }
+
+        if (closestX >= 0 && closestY >= 0 &&
+            boardState[closestX][closestY] == 0) {
+          return Move{closestX, closestY};
+        }
+      }
+    }
+
+    window.clear();
+    board.draw(window, 1600, 900);
+    draw(window);
+    window.display();
+  }
+}
+
+void Game::applyMove(const Move &move) {
+  if (boardState[move.x][move.y] == 0) {
+    boardState[move.x][move.y] = playerTurn ? 1 : 2;
+    playerTurn = !playerTurn;
+
+    // Optional: update turn text and color
+    if (playerTurn) {
+      turnText.setString("Black");
+      turnText.setFillColor(sf::Color::Black);
+    } else {
+      turnText.setString("White");
+      turnText.setFillColor(sf::Color::White);
+    }
+
+    // Check for win
+    int winner = checkWinner();
+    if (winner != 0) {
+      displayWinner(winner);
+    }
+  }
+}
+
+bool Game::isGameOver() { return checkWinner() != 0; }
+sf::RenderWindow &Game::getWindow() { return window; }

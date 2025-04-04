@@ -27,8 +27,8 @@ private:
   sf::RectangleShape musicSlider;
   sf::RectangleShape soundSliderBackground;
   sf::RectangleShape musicSliderBackground;
-  float soundVolume; // Volume for sound effects
-  float musicVolume; // Volume for music
+  float soundVolume;
+  float musicVolume;
   void updateSlider(sf::RectangleShape &slider, float value);
   void drawSlider(sf::RenderWindow &window, sf::RectangleShape &slider,
                   float value);

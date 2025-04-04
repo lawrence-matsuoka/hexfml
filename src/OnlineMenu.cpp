@@ -1,5 +1,10 @@
 #include "../include/OnlineMenu.hpp"
 #include "../include/Audio.hpp"
+#include "../include/Board.hpp"
+#include "../include/Game.hpp"
+#include "../include/Move.hpp"
+#include "../include/OnlineGame.hpp"
+#include "../include/Peer.hpp"
 #include <SFML/Network.hpp>
 #include <iostream>
 
@@ -187,12 +192,22 @@ void OnlineMenu::show() {
 
 void OnlineMenu::handleButtonClicks(int x, int y) {
   if (hostButton.getGlobalBounds().contains(x, y)) {
-    // Handle host button (currently no functionality)
-    std::cout << "Host button clicked!" << std::endl;
+    Peer peer;
+    if (peer.host()) {
+      std::cout << "Starting as host..." << std::endl;
+      Board board(11, 11, 40, window);
+      Game game(board, window);
+      ::runOnlineGame(game, peer);
+    }
   } else if (joinButton.getGlobalBounds().contains(x, y)) {
-    // Handle join button (currently no functionality)
-    std::cout << "Join button, IP Address entered: "
-              << ipFieldText.getString().toAnsiString() << std::endl;
+    std::string ip = ipFieldText.getString().toAnsiString();
+    Peer peer;
+    if (peer.join(ip)) {
+      std::cout << "Joining host at " << ip << std::endl;
+      Board board(11, 11, 40, window);
+      Game game(board, window);
+      ::runOnlineGame(game, peer);
+    }
   } else if (backButton.getGlobalBounds().contains(x, y)) {
     backPressed = true;
   } else if (portLink.getGlobalBounds().contains(x, y)) {
