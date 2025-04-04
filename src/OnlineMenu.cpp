@@ -184,9 +184,9 @@ void OnlineMenu::show() {
       if (cursorVisible) {
         window.draw(cursor);
       }
-
-      window.display();
     }
+
+    window.display();
   }
 }
 
