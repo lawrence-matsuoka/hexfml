@@ -167,23 +167,22 @@ void OnlineMenu::show() {
       if (backPressed) {
         return; // Break out of the loop, returning control to the main menu
       }
+    }
+    window.clear(sf::Color(85, 115, 85)); // Sage green background
+    window.draw(ipAddressText);
+    window.draw(portText);
+    window.draw(portLink);
+    window.draw(hostButton);
+    window.draw(joinButton);
+    window.draw(backButton);
+    window.draw(ipFieldBackground);
+    window.draw(ipFieldText);
+    window.draw(hostButtonLabel);
+    window.draw(joinButtonLabel);
+    window.draw(backButtonLabel);
 
-      window.clear(sf::Color(85, 115, 85)); // Sage green background
-      window.draw(ipAddressText);
-      window.draw(portText);
-      window.draw(portLink);
-      window.draw(hostButton);
-      window.draw(joinButton);
-      window.draw(backButton);
-      window.draw(ipFieldBackground);
-      window.draw(ipFieldText);
-      window.draw(hostButtonLabel);
-      window.draw(joinButtonLabel);
-      window.draw(backButtonLabel);
-
-      if (cursorVisible) {
-        window.draw(cursor);
-      }
+    if (cursorVisible) {
+      window.draw(cursor);
     }
 
     window.display();
