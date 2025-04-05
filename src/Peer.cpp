@@ -1,7 +1,11 @@
 #include "../include/Peer.hpp"
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
-Peer::Peer() : myTurn(false) {}
+Peer::Peer() : myTurn(false), gameOver(false) {
+  std::srand(std::time(0)); // Initialize random seed
+}
 
 bool Peer::host(unsigned short port) {
   sf::TcpListener listener;
@@ -17,7 +21,7 @@ bool Peer::host(unsigned short port) {
     return false;
   }
 
-  myTurn = true; // Host goes first
+  randomizeTurn(); // Randomize who goes first
   std::cout << "Client connected\n";
   return true;
 }
@@ -29,7 +33,7 @@ bool Peer::join(const sf::IpAddress &ip, unsigned short port) {
     return false;
   }
 
-  myTurn = false;
+  randomizeTurn(); // Randomize who goes first
   std::cout << "Connected to host\n";
   return true;
 }
@@ -37,14 +41,22 @@ bool Peer::join(const sf::IpAddress &ip, unsigned short port) {
 void Peer::sendMove(const Game::Move &move) {
   sf::Packet packet = move.toPacket();
   socket.send(packet);
-  myTurn = false;
+  myTurn = false; // Pass turn to the other player
 }
 
 Game::Move Peer::receiveMove() {
   sf::Packet packet;
   socket.receive(packet);
-  myTurn = true;
+  myTurn = true; // This player can make the next move
   return Game::Move::fromPacket(packet);
 }
 
 bool Peer::isMyTurn() const { return myTurn; }
+
+bool Peer::isGameOver() const { return gameOver; }
+
+void Peer::setGameOver(bool gameOver) { this->gameOver = gameOver; }
+
+void Peer::randomizeTurn() {
+  myTurn = std::rand() % 2 == 0; // Randomly decide who goes first
+}

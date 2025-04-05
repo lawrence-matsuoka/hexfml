@@ -12,9 +12,14 @@ public:
   Game::Move receiveMove();
 
   bool isMyTurn() const;
+  bool isGameOver() const;
+  void setGameOver(bool gameOver);
+  
+  void randomizeTurn();
 
 private:
   sf::TcpSocket socket;
   bool myTurn;
+  bool gameOver;
 };
 
