@@ -6,6 +6,7 @@ void runOnlineGame(Game &game, Peer &peer) {
 
   while (game.getWindow().isOpen()) {
     if (game.quitToMenu) {
+      peer.closeConnection();
       break;
     }
     if (peer.isMyTurn()) {

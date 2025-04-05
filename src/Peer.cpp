@@ -75,3 +75,8 @@ bool Peer::isGameOver() const { return gameOver; }
 void Peer::setGameOver(bool gameOver) { this->gameOver = gameOver; }
 
 bool Peer::randomizeTurn() { return std::rand() % 2 == 0; }
+
+void Peer::closeConnection() {
+  socket.disconnect();
+  std::cout << "Connection closed." << std::endl;
+}

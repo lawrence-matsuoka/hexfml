@@ -16,6 +16,8 @@ public:
   bool isGameOver() const;
   void setGameOver(bool gameOver);
 
+  void closeConnection();
+
 private:
   bool randomizeTurn();
 
