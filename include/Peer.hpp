@@ -4,7 +4,8 @@
 
 class Peer {
 public:
-  Peer(); 
+  Peer();
+
   bool host(unsigned short port = 54000);
   bool join(const sf::IpAddress &ip, unsigned short port = 54000);
 
@@ -14,12 +15,12 @@ public:
   bool isMyTurn() const;
   bool isGameOver() const;
   void setGameOver(bool gameOver);
-  
-  void randomizeTurn();
 
 private:
+  bool randomizeTurn();
+
   sf::TcpSocket socket;
   bool myTurn;
   bool gameOver;
+  bool isHost;
 };
-

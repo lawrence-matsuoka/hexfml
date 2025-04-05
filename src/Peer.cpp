@@ -1,9 +1,10 @@
 #include "../include/Peer.hpp"
+#include <SFML/Network/Packet.hpp>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-Peer::Peer() : myTurn(false), gameOver(false) {
+Peer::Peer() : myTurn(false), gameOver(false), isHost(false) {
   std::srand(std::time(0)); // Initialize random seed
 }
 
@@ -21,8 +22,15 @@ bool Peer::host(unsigned short port) {
     return false;
   }
 
-  randomizeTurn(); // Randomize who goes first
+  isHost = true;
+
+  bool goesFirst = randomizeTurn();
   std::cout << "Client connected\n";
+
+  sf::Packet packet;
+  packet << goesFirst;
+  socket.send(packet);
+
   return true;
 }
 
@@ -33,8 +41,17 @@ bool Peer::join(const sf::IpAddress &ip, unsigned short port) {
     return false;
   }
 
-  randomizeTurn(); // Randomize who goes first
+  isHost = false;
   std::cout << "Connected to host\n";
+
+  sf::Packet packet;
+  socket.receive(packet);
+
+  bool goesFirst;
+  packet >> goesFirst;
+
+  myTurn = !goesFirst;
+
   return true;
 }
 
@@ -57,10 +74,4 @@ bool Peer::isGameOver() const { return gameOver; }
 
 void Peer::setGameOver(bool gameOver) { this->gameOver = gameOver; }
 
-void Peer::randomizeTurn() {
-  if (std::rand() % 2 == 0) {
-    myTurn = true;
-  } else {
-    myTurn = false;
-  }
-}
+bool Peer::randomizeTurn() { return std::rand() % 2 == 0; }
