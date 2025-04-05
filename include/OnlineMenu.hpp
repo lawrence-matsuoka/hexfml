@@ -14,9 +14,15 @@ public:
   void show();
   void handleButtonClicks(int x, int y);
   void updateIPText();
+  void setStatusMessage(const std::string &message);
   void runOnlineGame(Peer &peer);
 
 private:
+  sf::Text statusText;
+  sf::Clock statusTimer;
+  float statusDuration = 5.f;
+  bool showStatus = false;
+
   sf::RenderWindow &window;
   sf::Font font;
   sf::Text ipAddressText;

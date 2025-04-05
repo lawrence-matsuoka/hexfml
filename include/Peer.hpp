@@ -1,6 +1,7 @@
 #pragma once
 #include "Game.hpp"
 #include <SFML/Network.hpp>
+#include <functional>
 
 class Peer {
 public:
@@ -18,6 +19,9 @@ public:
 
   void closeConnection();
 
+  void setStatusCallBack(std::function<void(const std::string &)> callBack);
+
+  std::function<void(const std::string &)> statusCallBack;
 private:
   bool randomizeTurn();
 

@@ -17,6 +17,12 @@ OnlineMenu::OnlineMenu(sf::RenderWindow &window)
     std::cerr << "Error loading font" << std::endl;
   }
 
+  // Status text for sockets
+  statusText.setFont(font);
+  statusText.setCharacterSize(40);
+  statusText.setFillColor(sf::Color::White);
+  statusText.setPosition(100, 800); // bottom left
+
   // Set up IP Address text
   ipAddressText.setFont(font);
   updateIPText();
@@ -184,25 +190,36 @@ void OnlineMenu::show() {
     if (cursorVisible) {
       window.draw(cursor);
     }
+    if (showStatus &&
+        statusTimer.getElapsedTime().asSeconds() < statusDuration) {
+      window.draw(statusText);
+    }
 
     window.display();
   }
 }
 
+Peer peer;
+
 void OnlineMenu::handleButtonClicks(int x, int y) {
   if (hostButton.getGlobalBounds().contains(x, y)) {
-    Peer peer;
+
+    peer.setStatusCallBack(
+        [this](const std::string &msg) { this->setStatusMessage(msg); });
+
     if (peer.host()) {
-      std::cout << "Starting as host..." << std::endl;
       Board board(11, 11, 40, window);
       Game game(board, window);
       ::runOnlineGame(game, peer);
     }
   } else if (joinButton.getGlobalBounds().contains(x, y)) {
     std::string ip = ipFieldText.getString().toAnsiString();
-    Peer peer;
     if (peer.join(ip)) {
-      std::cout << "Joining host at " << ip << std::endl;
+      std::string message = "Joining host at " + ip;
+      if (peer.statusCallBack) {
+        peer.statusCallBack(message);
+      }
+      //      std::cout << "Joining host at " << ip << std::endl;
       Board board(11, 11, 40, window);
       Game game(board, window);
       ::runOnlineGame(game, peer);
@@ -226,4 +243,10 @@ void OnlineMenu::updateIPText() {
   sf::IpAddress ip = sf::IpAddress::getPublicAddress();
   ipAddress = "Your IP: " + ip.toString();
   ipAddressText.setString(ipAddress);
+}
+
+void OnlineMenu::setStatusMessage(const std::string &message) {
+  statusText.setString(message);
+  statusTimer.restart();
+  showStatus = true;
 }
