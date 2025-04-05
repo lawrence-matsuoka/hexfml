@@ -185,7 +185,7 @@ void Game::draw(sf::RenderWindow &window) {
   // Set the hover piece position to follow the mouse
   if (isInsideBoard && closestX >= 0 && closestX < rows && closestY >= 0 &&
       closestY < columns && boardState[closestX][closestY] == 0 &&
-      peer.isMyTurn() == false) {
+      !peer.isMyTurn()) {
     hoverPiece.setPosition(hexCenters[closestX][closestY]);
     window.draw(hoverPiece);
   }
