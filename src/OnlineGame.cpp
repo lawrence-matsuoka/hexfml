@@ -6,12 +6,12 @@ void runOnlineGame(Game &game, Peer &peer) {
 
   while (game.getWindow().isOpen()) {
     if (peer.isMyTurn()) {
-      Game::Move move = game.getMove(); // Use Game::Move instead of Move
-      game.applyMove(move);             // Apply it locally
-      peer.sendMove(move);              // Send to opponent
+      Game::Move move = game.getMove();
+      game.applyMove(move); // Apply it locally
+      peer.sendMove(move);  // Send to opponent
     } else {
-      Game::Move move = peer.receiveMove(); // Use Game::Move instead of Move
-      game.applyMove(move);                 // Apply it locally
+      Game::Move move = peer.receiveMove();
+      game.applyMove(move);
     }
 
     game.draw(game.getWindow());

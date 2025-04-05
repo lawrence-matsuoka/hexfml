@@ -1,6 +1,7 @@
 #include "../include/Game.hpp"
 #include "../include/Audio.hpp"
 #include "../include/PauseMenu.hpp"
+#include "../include/Peer.hpp"
 #include <cmath>
 #include <iostream>
 
@@ -177,21 +178,15 @@ void Game::draw(sf::RenderWindow &window) {
       }
     }
   }
+  Peer peer;
   // Change colour on player turn
   hoverPiece.setFillColor(playerTurn ? sf::Color(0, 0, 0, 100)
                                      : sf::Color(255, 255, 255, 100));
   // Set the hover piece position to follow the mouse
   if (isInsideBoard && closestX >= 0 && closestX < rows && closestY >= 0 &&
-      closestY < columns) {
+      closestY < columns && boardState[closestX][closestY] == 0 &&
+      peer.isMyTurn() == false) {
     hoverPiece.setPosition(hexCenters[closestX][closestY]);
-  } else {
-    hoverPiece.setPosition(-100, -100); // Set off screen
-  }
-  // if (boardState[closestX][closestY] == 0) {
-  //   window.draw(hoverPiece);
-  // }
-  if (closestX >= 0 && closestX < rows && closestY >= 0 && closestY < columns &&
-      boardState[closestX][closestY] == 0) {
     window.draw(hoverPiece);
   }
 
