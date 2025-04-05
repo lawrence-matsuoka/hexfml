@@ -50,15 +50,14 @@ void Game::run() {
 }
 
 Game::Game(Board &board, sf::RenderWindow &window)
-    : board(board), window(window),
+    : quitToMenu(false), board(board), window(window),
       pauseMenu(window, {"Resume", "Quit to Menu", "Quit to Desktop"},
                 {[this]() { return PauseMenuResult::Resume; },
                  [this]() { return PauseMenuResult::QuitToMenu; },
                  [this]() { return PauseMenuResult::QuitToDesktop; }}),
       rows(board.getHexCenters().size()),
       columns(board.getHexCenters()[0].size()), radius(board.radius),
-      playerTurn(true), boardState(rows, std::vector<int>(columns, 0)),
-      quitToMenu(false) {
+      playerTurn(true), boardState(rows, std::vector<int>(columns, 0)) {
   // Set up game piece
   int pieceRadius = radius / 2;
   piece.setRadius(pieceRadius);
@@ -133,7 +132,10 @@ void Game::handleClick(sf::Vector2i mousePosition) {
     // **Check for a winner**
     int winner = checkWinner();
     if (winner != 0) {
-      displayWinner(winner);
+      GameOverChoice choice = displayWinner(winner);
+      if (choice == GameOverChoice::QuitToMenu) {
+        quitToMenu = true;
+      }
       return; // Stop processing after a win
     }
 
@@ -185,7 +187,7 @@ void Game::draw(sf::RenderWindow &window) {
   // Set the hover piece position to follow the mouse
   if (isInsideBoard && closestX >= 0 && closestX < rows && closestY >= 0 &&
       closestY < columns && boardState[closestX][closestY] == 0 &&
-      !peer.isMyTurn()) {
+      peer.isMyTurn() == false) {
     hoverPiece.setPosition(hexCenters[closestX][closestY]);
     window.draw(hoverPiece);
   }
@@ -272,7 +274,7 @@ bool Game::dfs(int x, int y, int player,
   return false;
 }
 
-void Game::displayWinner(int winner) {
+GameOverChoice Game::displayWinner(int winner) {
   // Semi-transparent overlay as background
   sf::RectangleShape overlay(sf::Vector2f(1600, 900));
   overlay.setFillColor(sf::Color(0, 0, 0, 150));
@@ -311,13 +313,20 @@ void Game::displayWinner(int winner) {
   std::vector<sf::Text> buttonLabels;
   std::vector<std::string> buttonNames = {"Play Again", "Quit to Menu",
                                           "Quit to Desktop"};
-  std::vector<std::function<void()>> buttonActions = {
-      [this]() { resetGame(); }, // Play Again
-      [this]() {
+  std::vector<std::function<GameOverChoice()>> buttonActions = {
+      [this]() -> GameOverChoice {
+        resetGame();
+        return GameOverChoice::PlayAgain;
+      }, // Play Again
+      [this]() -> GameOverChoice {
         resetGame();
         quitToMenu = true;
-      },                           // Quit to Menu
-      [this]() { window.close(); } // Quit to Desktop
+        return GameOverChoice::QuitToMenu;
+      }, // Quit to Menu
+      [this]() -> GameOverChoice {
+        window.close();
+        return GameOverChoice::QuitToDesktop;
+      } // Quit to Desktop
   };
 
   for (size_t i = 0; i < buttonNames.size(); ++i) {
@@ -366,8 +375,8 @@ void Game::displayWinner(int winner) {
           for (size_t i = 0; i < buttons.size(); ++i) {
             if (buttons[i].getGlobalBounds().contains(mouseWorldPos.x,
                                                       mouseWorldPos.y)) {
-              buttonActions[i]();
-              return; // Exit menu after selecting an action
+              //              buttonActions[i]();
+              return buttonActions[i](); // Exit menu after selecting an action
             }
           }
         }
@@ -386,6 +395,8 @@ void Game::displayWinner(int winner) {
       window.draw(label);
     window.display();
   }
+
+  return GameOverChoice::QuitToDesktop;
 }
 
 void Game::resetGame() {
@@ -467,7 +478,10 @@ void Game::applyMove(const Move &move) {
     // Check for win
     int winner = checkWinner();
     if (winner != 0) {
-      displayWinner(winner);
+      GameOverChoice choice = displayWinner(winner);
+      if (choice == GameOverChoice::QuitToMenu) {
+        quitToMenu = true;
+      }
     }
   }
 }

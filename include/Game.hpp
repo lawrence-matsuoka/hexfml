@@ -11,6 +11,8 @@
 #include <limits>
 #include <vector>
 
+enum class GameOverChoice { PlayAgain, QuitToMenu, QuitToDesktop };
+
 class Game {
 public:
   void run();
@@ -20,7 +22,9 @@ public:
   void draw(sf::RenderWindow &window);
   void resetGame();
   int checkWinner();
-  void displayWinner(int winner);
+  GameOverChoice displayWinner(int winner);
+
+  bool quitToMenu = false;
 
   struct Move {
     int x;
@@ -55,7 +59,6 @@ private:
   float radius;
   bool playerTurn; // true = Player 1, false = Player 2
   std::vector<std::vector<int>> boardState;
-  bool quitToMenu = false;
 
   sf::CircleShape piece;
   sf::CircleShape hoverPiece;

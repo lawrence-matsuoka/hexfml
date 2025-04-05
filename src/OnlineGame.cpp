@@ -5,6 +5,9 @@ void runOnlineGame(Game &game, Peer &peer) {
   game.resetGame();
 
   while (game.getWindow().isOpen()) {
+    if (game.quitToMenu) {
+      break;
+    }
     if (peer.isMyTurn()) {
       Game::Move move = game.getMove();
       game.applyMove(move); // Apply it locally

@@ -58,5 +58,9 @@ bool Peer::isGameOver() const { return gameOver; }
 void Peer::setGameOver(bool gameOver) { this->gameOver = gameOver; }
 
 void Peer::randomizeTurn() {
-  myTurn = std::rand() % 2 == 0; // Randomly decide who goes first
+  if (std::rand() % 2 == 0) {
+    myTurn = true;
+  } else {
+    myTurn = false;
+  }
 }
