@@ -206,11 +206,45 @@ void OnlineMenu::handleButtonClicks(int x, int y) {
     peer.setStatusCallBack(
         [this](const std::string &msg) { this->setStatusMessage(msg); });
 
-    if (peer.host()) {
+    if (peer.beginHosting(54000)) {
+      // Show "Waiting for connection..." screen
+      while (!peer.isConnected() && window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+          if (event.type == sf::Event::Closed) {
+            window.close();
+            return;
+          }
+          if (event.type == sf::Event::KeyPressed &&
+              event.key.code == sf::Keyboard::Escape) {
+            return; // Allow user to cancel
+          }
+        }
+
+        window.clear(sf::Color(85, 115, 85));
+
+        sf::Text waitingText;
+        waitingText.setFont(font);
+        waitingText.setString("Waiting for opponent to join...");
+        waitingText.setCharacterSize(40);
+        waitingText.setFillColor(sf::Color::White);
+        waitingText.setPosition(100, 400);
+        window.draw(waitingText);
+
+        window.display();
+
+        peer.tryAccept(); // Non-blocking attempt to accept connection
+        sf::sleep(sf::milliseconds(100));
+      }
+
+      if (!window.isOpen())
+        return;
+
       Board board(11, 11, 40, window);
       Game game(board, peer, window);
       ::runOnlineGame(board, game, peer);
     }
+
   } else if (joinButton.getGlobalBounds().contains(x, y)) {
     std::string ip = ipFieldText.getString().toAnsiString();
     if (peer.join(ip)) {
@@ -218,7 +252,6 @@ void OnlineMenu::handleButtonClicks(int x, int y) {
       if (peer.statusCallBack) {
         peer.statusCallBack(message);
       }
-      //      std::cout << "Joining host at " << ip << std::endl;
       Board board(11, 11, 40, window);
       Game game(board, peer, window);
       ::runOnlineGame(board, game, peer);

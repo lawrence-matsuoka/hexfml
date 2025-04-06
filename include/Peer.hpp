@@ -10,6 +10,9 @@ public:
   bool host(unsigned short port = 54000);
   bool join(const sf::IpAddress &ip, unsigned short port = 54000);
 
+  bool beginHosting(unsigned short port);
+  void tryAccept();
+
   void sendMove(const Game::Move &move);
   Game::Move receiveMove();
 
@@ -34,6 +37,8 @@ private:
   bool randomizeTurn();
 
   sf::TcpSocket socket;
+  sf::TcpListener listener;
+
   bool gameOver;
 
   bool connected;

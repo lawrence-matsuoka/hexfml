@@ -21,6 +21,12 @@ void updateTurnText(Game &game, Peer &peer) {
 
 void runOnlineGame(Board &board, Game &game, Peer &peer) {
   game.resetGame();
+  updateTurnText(game, peer);
+
+  game.getWindow().clear(sf::Color(85, 115, 85));
+  board.draw(game.getWindow(), 1600, 900);
+  game.draw(game.getWindow());
+  game.getWindow().display();
 
   while (game.getWindow().isOpen()) {
     if (game.quitToMenu) {

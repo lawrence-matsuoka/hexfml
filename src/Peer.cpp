@@ -9,7 +9,6 @@ Peer::Peer() : isHost(false), myTurn(false), gameOver(false), connected(false) {
 }
 
 bool Peer::host(unsigned short port) {
-  sf::TcpListener listener;
   listener.setBlocking(true);
   if (listener.listen(port) != sf::Socket::Done) {
     if (statusCallBack) {
@@ -17,10 +16,6 @@ bool Peer::host(unsigned short port) {
     }
 
     return false;
-  }
-
-  if (statusCallBack) {
-    statusCallBack("Waiting for connection...\n");
   }
 
   if (listener.accept(socket) != sf::Socket::Done) {
@@ -31,10 +26,6 @@ bool Peer::host(unsigned short port) {
   }
 
   isHost = true;
-
-  if (statusCallBack) {
-    statusCallBack("Client connected\n");
-  }
 
   sf::Packet packet;
   packet << goesFirst;
@@ -103,6 +94,30 @@ void Peer::setStatusCallBack(
   statusCallBack = callBack;
 }
 
-bool Peer::isConnected() const {
-  return connected;
+bool Peer::isConnected() const { return connected; }
+
+bool Peer::beginHosting(unsigned short port) {
+  listener.setBlocking(false);
+  if (listener.listen(port) != sf::Socket::Done) {
+    if (statusCallBack)
+      statusCallBack("Error listening on port\n");
+    return false;
+  }
+  if (statusCallBack)
+    statusCallBack("Waiting for connection...\n");
+  return true;
+}
+
+void Peer::tryAccept() {
+  if (!connected && listener.accept(socket) == sf::Socket::Done) {
+    isHost = true;
+    connected = true;
+
+    if (statusCallBack)
+      statusCallBack("Client connected\n");
+
+    sf::Packet packet;
+    packet << goesFirst;
+    socket.send(packet);
+  }
 }
