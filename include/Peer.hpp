@@ -33,6 +33,8 @@ public:
 
   bool isConnected() const;
 
+  bool isBlack() const;
+
 private:
   bool randomizeTurn();
 

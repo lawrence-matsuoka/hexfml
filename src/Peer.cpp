@@ -26,10 +26,13 @@ bool Peer::host(unsigned short port) {
   }
 
   isHost = true;
+  goesFirst = randomizeTurn();
+  myTurn = goesFirst;
 
   sf::Packet packet;
   packet << goesFirst;
   socket.send(packet);
+
   connected = true;
 
   return true;
@@ -54,8 +57,9 @@ bool Peer::join(const sf::IpAddress &ip, unsigned short port) {
   connected = true;
 
   packet >> goesFirst;
+  goesFirst = !goesFirst;
 
-  myTurn = !goesFirst;
+  myTurn = goesFirst;
 
   return true;
 }
@@ -120,4 +124,8 @@ void Peer::tryAccept() {
     packet << goesFirst;
     socket.send(packet);
   }
+}
+
+bool Peer::isBlack() const {
+  return (isHost && goesFirst) || (!isHost && !goesFirst);
 }

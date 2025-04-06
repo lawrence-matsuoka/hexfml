@@ -296,8 +296,7 @@ GameOverChoice Game::displayWinner(int winner) {
   winnerText.setCharacterSize(50);
   if (peer.isConnected()) {
     // Online game
-    bool hasBlack =
-        (peer.isHost && peer.goesFirst) || (!peer.isHost && !peer.goesFirst);
+    bool hasBlack = peer.isBlack(); 
     bool blackWon = (winner == 1);
     bool hasWon = (hasBlack && blackWon) || (!hasBlack && !blackWon);
 
@@ -316,9 +315,8 @@ GameOverChoice Game::displayWinner(int winner) {
       winnerText.setFillColor(sf::Color::White);
     }
   }
-  //  winnerText.setString(winner == 1 ? "Black Wins!" : "White Wins!");
-  //  winnerText.setFillColor(winner == 1 ? sf::Color::Black :
-  //  sf::Color::White);
+  winnerText.setString(winner == 1 ? "Black Wins!" : "White Wins!");
+  winnerText.setFillColor(winner == 1 ? sf::Color::Black : sf::Color::White);
   winnerText.setOrigin(winnerText.getLocalBounds().width / 2,
                        winnerText.getLocalBounds().height / 2);
   winnerText.setPosition(800, 450);

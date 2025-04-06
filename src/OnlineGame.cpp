@@ -5,22 +5,24 @@ void updateTurnText(Game &game, Peer &peer) {
   game.turnText.setPosition(50, 800);
 
   bool myTurn = peer.isMyTurn();
-  bool iAmBlack =
-      (peer.isHost && peer.goesFirst) || (!peer.isHost && !peer.goesFirst);
+  bool hasBlack = peer.isBlack();
 
   if (myTurn) {
-    game.turnText.setString(iAmBlack ? "Your turn (Black)"
+    game.turnText.setString(hasBlack ? "Your turn (Black)"
                                      : "Your turn (White)");
-    game.turnText.setFillColor(iAmBlack ? sf::Color::Black : sf::Color::White);
+    game.turnText.setFillColor(hasBlack ? sf::Color::Black : sf::Color::White);
   } else {
-    game.turnText.setString(iAmBlack ? "Opponent's turn (White)"
+    game.turnText.setString(hasBlack ? "Opponent's turn (White)"
                                      : "Opponent's turn (Black)");
-    game.turnText.setFillColor(iAmBlack ? sf::Color::White : sf::Color::Black);
+    game.turnText.setFillColor(hasBlack ? sf::Color::White : sf::Color::Black);
   }
 }
 
 void runOnlineGame(Board &board, Game &game, Peer &peer) {
   game.resetGame();
+  updateTurnText(game, peer);
+
+  peer.myTurn = peer.goesFirst;
   updateTurnText(game, peer);
 
   game.getWindow().clear(sf::Color(85, 115, 85));
