@@ -441,6 +441,11 @@ void Game::resetGame() {
 Game::Move Game::getMove() {
   const auto &hexCenters = board.getHexCenters();
 
+  sf::Event flushEvent;
+  while (window.pollEvent(flushEvent)) {
+    // Do nothing — this flushes all buffered inputs
+  }
+
   while (true) {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -454,6 +459,7 @@ Game::Move Game::getMove() {
         sf::Vector2f mouseWorldPos =
             window.mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
 
+        bool isInsideBoard = false;
         int closestX = -1, closestY = -1;
         float minDistance = std::numeric_limits<float>::max();
 
@@ -462,6 +468,14 @@ Game::Move Game::getMove() {
             sf::Vector2f center = hexCenters[x][y];
             float distance = std::hypot(mouseWorldPos.x - center.x,
                                         mouseWorldPos.y - center.y);
+
+            if (mouseWorldPos.x >= hexCenters[x][y].x - radius &&
+                mouseWorldPos.x <= hexCenters[x][y].x + radius &&
+                mouseWorldPos.y >= hexCenters[x][y].y - radius &&
+                mouseWorldPos.y <= hexCenters[x][y].y + radius) {
+              isInsideBoard = true; // Mouse is inside board
+            }
+
             if (distance < minDistance) {
               minDistance = distance;
               closestX = x;
@@ -470,7 +484,7 @@ Game::Move Game::getMove() {
           }
         }
 
-        if (closestX >= 0 && closestY >= 0 &&
+        if (isInsideBoard && closestX >= 0 && closestY >= 0 &&
             boardState[closestX][closestY] == 0) {
           return Move{closestX, closestY};
         }
