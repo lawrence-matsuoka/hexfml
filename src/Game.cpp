@@ -501,6 +501,7 @@ Game::Move Game::getMove() {
 void Game::applyMove(const Move &move) {
   if (boardState[move.x][move.y] == 0) {
     boardState[move.x][move.y] = playerTurn ? 1 : 2;
+    Sounds::playSound("piece");
     playerTurn = !playerTurn;
 
     // Check for win
