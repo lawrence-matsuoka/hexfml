@@ -51,6 +51,8 @@ public:
   sf::RenderWindow &getWindow();
   void draw();
 
+  sf::Text turnText;
+
 private:
   Board &board;
   sf::RenderWindow &window;
@@ -69,7 +71,6 @@ private:
 
   // Fonts
   sf::Font font;
-  sf::Text turnText;
 
   bool dfs(int x, int y, int player, std::vector<std::vector<bool>> &visited);
 };

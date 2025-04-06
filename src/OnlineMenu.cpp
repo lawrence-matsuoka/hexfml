@@ -199,9 +199,8 @@ void OnlineMenu::show() {
   }
 }
 
-Peer peer;
-
 void OnlineMenu::handleButtonClicks(int x, int y) {
+  Peer peer;
   if (hostButton.getGlobalBounds().contains(x, y)) {
 
     peer.setStatusCallBack(
@@ -210,7 +209,7 @@ void OnlineMenu::handleButtonClicks(int x, int y) {
     if (peer.host()) {
       Board board(11, 11, 40, window);
       Game game(board, window);
-      ::runOnlineGame(game, peer);
+      ::runOnlineGame(board, game, peer);
     }
   } else if (joinButton.getGlobalBounds().contains(x, y)) {
     std::string ip = ipFieldText.getString().toAnsiString();
@@ -222,7 +221,7 @@ void OnlineMenu::handleButtonClicks(int x, int y) {
       //      std::cout << "Joining host at " << ip << std::endl;
       Board board(11, 11, 40, window);
       Game game(board, window);
-      ::runOnlineGame(game, peer);
+      ::runOnlineGame(board, game, peer);
     }
   } else if (backButton.getGlobalBounds().contains(x, y)) {
     backPressed = true;

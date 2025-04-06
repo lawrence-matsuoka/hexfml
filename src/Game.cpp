@@ -5,6 +5,8 @@
 #include <cmath>
 #include <iostream>
 
+Peer peer;
+
 void Game::run() {
   while (window.isOpen()) {
     sf::Event event;
@@ -180,7 +182,6 @@ void Game::draw(sf::RenderWindow &window) {
       }
     }
   }
-  Peer peer;
   // Change colour on player turn
   hoverPiece.setFillColor(playerTurn ? sf::Color(0, 0, 0, 100)
                                      : sf::Color(255, 255, 255, 100));
@@ -465,15 +466,6 @@ void Game::applyMove(const Move &move) {
   if (boardState[move.x][move.y] == 0) {
     boardState[move.x][move.y] = playerTurn ? 1 : 2;
     playerTurn = !playerTurn;
-
-    // Optional: update turn text and color
-    if (playerTurn) {
-      turnText.setString("Black");
-      turnText.setFillColor(sf::Color::Black);
-    } else {
-      turnText.setString("White");
-      turnText.setFillColor(sf::Color::White);
-    }
 
     // Check for win
     int winner = checkWinner();

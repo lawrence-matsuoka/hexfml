@@ -4,7 +4,7 @@
 #include <ctime>
 #include <iostream>
 
-Peer::Peer() : myTurn(false), gameOver(false), isHost(false) {
+Peer::Peer() : isHost(false), myTurn(false), gameOver(false) {
   std::srand(std::time(0)); // Initialize random seed
 }
 
@@ -32,7 +32,6 @@ bool Peer::host(unsigned short port) {
 
   isHost = true;
 
-  bool goesFirst = randomizeTurn();
   if (statusCallBack) {
     statusCallBack("Client connected\n");
   }
@@ -61,7 +60,6 @@ bool Peer::join(const sf::IpAddress &ip, unsigned short port) {
   sf::Packet packet;
   socket.receive(packet);
 
-  bool goesFirst;
   packet >> goesFirst;
 
   myTurn = !goesFirst;

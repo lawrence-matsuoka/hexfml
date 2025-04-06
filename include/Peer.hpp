@@ -22,11 +22,15 @@ public:
   void setStatusCallBack(std::function<void(const std::string &)> callBack);
 
   std::function<void(const std::string &)> statusCallBack;
+
+  bool isHost;
+  bool goesFirst = randomizeTurn();
+
+  bool myTurn;
+
 private:
   bool randomizeTurn();
 
   sf::TcpSocket socket;
-  bool myTurn;
   bool gameOver;
-  bool isHost;
 };

@@ -3,4 +3,4 @@
 #include "Game.hpp"
 #include "Peer.hpp"
 
-void runOnlineGame(Game &game, Peer &peer);
+void runOnlineGame(Board &board, Game &game, Peer &peer);
