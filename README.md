@@ -1,5 +1,14 @@
 # HexFML
 
+## To-do
+Online:
+- turnText for online
+- displayWinner for online
+- play again time limit and afk detection
+- PauseMenu in online
+- more graceful disconnect
+- Update win screen on loser's side immediately
+
 [Hex](https://en.wikipedia.org/wiki/Hex_(board_game)) is a finite, 2-player perfect information game, and an abstract strategy game. Players attempt to connect opposite sides of a (traditionally) 11x11 rhombus-shaped board made of hexagonal cells. This an application where you can play Hex written in C++ using SFML.
 
 The etymology behind HexFML has nothing to do with the acronym fml and it's meaning that you may or may not know (but it would reflect my dev experience throughout this learning experience). The name is derived from Hex + SFML and combined into HexFML. I really enjoyed my combinatorial game theory class this semester and I want to explore C++ applications such as embedded and game dev, so I decided to recreate the board game Hex. This was one of the games we studied in class and my prof's "addiction", so it seemed like a suitable candidate. 
