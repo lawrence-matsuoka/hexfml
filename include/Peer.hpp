@@ -28,9 +28,13 @@ public:
 
   bool myTurn;
 
+  bool isConnected() const;
+
 private:
   bool randomizeTurn();
 
   sf::TcpSocket socket;
   bool gameOver;
+
+  bool connected;
 };

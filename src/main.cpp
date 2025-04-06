@@ -16,7 +16,8 @@ int main() {
                           sf::ContextSettings(0, 0, 8));
 
   Board board(11, 11, 40, window);
-  Game game(board, window);
+  Peer peer;
+  Game game(board, peer, window);
   bool gamePaused = false;
 
   // Define the actions for the pause menu buttons

@@ -13,10 +13,12 @@
 
 enum class GameOverChoice { PlayAgain, QuitToMenu, QuitToDesktop };
 
+class Peer;
+
 class Game {
 public:
   void run();
-  Game(Board &board, sf::RenderWindow &window);
+  Game(Board &board, Peer &peer, sf::RenderWindow &window);
   bool gamePaused = false;
   void handleClick(sf::Vector2i mousePosition);
   void draw(sf::RenderWindow &window);
@@ -55,6 +57,7 @@ public:
 
 private:
   Board &board;
+  Peer &peer;
   sf::RenderWindow &window;
   PauseMenu pauseMenu;
   int rows, columns;

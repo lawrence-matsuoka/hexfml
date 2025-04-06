@@ -208,7 +208,7 @@ void OnlineMenu::handleButtonClicks(int x, int y) {
 
     if (peer.host()) {
       Board board(11, 11, 40, window);
-      Game game(board, window);
+      Game game(board, peer, window);
       ::runOnlineGame(board, game, peer);
     }
   } else if (joinButton.getGlobalBounds().contains(x, y)) {
@@ -220,7 +220,7 @@ void OnlineMenu::handleButtonClicks(int x, int y) {
       }
       //      std::cout << "Joining host at " << ip << std::endl;
       Board board(11, 11, 40, window);
-      Game game(board, window);
+      Game game(board, peer, window);
       ::runOnlineGame(board, game, peer);
     }
   } else if (backButton.getGlobalBounds().contains(x, y)) {

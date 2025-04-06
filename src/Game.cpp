@@ -5,8 +5,6 @@
 #include <cmath>
 #include <iostream>
 
-Peer peer;
-
 void Game::run() {
   while (window.isOpen()) {
     sf::Event event;
@@ -51,8 +49,8 @@ void Game::run() {
   }
 }
 
-Game::Game(Board &board, sf::RenderWindow &window)
-    : quitToMenu(false), board(board), window(window),
+Game::Game(Board &board, Peer &peer, sf::RenderWindow &window)
+    : quitToMenu(false), board(board), peer(peer), window(window),
       pauseMenu(window, {"Resume", "Quit to Menu", "Quit to Desktop"},
                 {[this]() { return PauseMenuResult::Resume; },
                  [this]() { return PauseMenuResult::QuitToMenu; },
@@ -187,8 +185,7 @@ void Game::draw(sf::RenderWindow &window) {
                                      : sf::Color(255, 255, 255, 100));
   // Set the hover piece position to follow the mouse
   if (isInsideBoard && closestX >= 0 && closestX < rows && closestY >= 0 &&
-      closestY < columns && boardState[closestX][closestY] == 0 &&
-      peer.isMyTurn() == false) {
+      closestY < columns && boardState[closestX][closestY] == 0) {
     hoverPiece.setPosition(hexCenters[closestX][closestY]);
     window.draw(hoverPiece);
   }
@@ -297,11 +294,37 @@ GameOverChoice Game::displayWinner(int winner) {
   sf::Text winnerText;
   winnerText.setFont(font);
   winnerText.setCharacterSize(50);
-  winnerText.setString(winner == 1 ? "Black Wins!" : "White Wins!");
-  winnerText.setFillColor(winner == 1 ? sf::Color::Black : sf::Color::White);
+  if (peer.isConnected()) {
+    // Online game
+    bool hasBlack =
+        (peer.isHost && peer.goesFirst) || (!peer.isHost && !peer.goesFirst);
+    bool blackWon = (winner == 1);
+    bool hasWon = (hasBlack && blackWon) || (!hasBlack && !blackWon);
+
+    std::string message = hasWon ? "You won" : "You lost";
+    sf::Color messageColor = hasBlack ? sf::Color::Black : sf::Color::White;
+
+    winnerText.setString(message);
+    winnerText.setFillColor(messageColor);
+  } else {
+    // Local game
+    if (winner == 1) {
+      winnerText.setString("Black wins!");
+      winnerText.setFillColor(sf::Color::Black);
+    } else {
+      winnerText.setString("White wins!");
+      winnerText.setFillColor(sf::Color::White);
+    }
+  }
+  //  winnerText.setString(winner == 1 ? "Black Wins!" : "White Wins!");
+  //  winnerText.setFillColor(winner == 1 ? sf::Color::Black :
+  //  sf::Color::White);
   winnerText.setOrigin(winnerText.getLocalBounds().width / 2,
                        winnerText.getLocalBounds().height / 2);
   winnerText.setPosition(800, 450);
+
+  std::string message;
+  sf::Color messageColor;
 
   // Button properties
   float buttonWidth = 300;
@@ -376,7 +399,6 @@ GameOverChoice Game::displayWinner(int winner) {
           for (size_t i = 0; i < buttons.size(); ++i) {
             if (buttons[i].getGlobalBounds().contains(mouseWorldPos.x,
                                                       mouseWorldPos.y)) {
-              //              buttonActions[i]();
               return buttonActions[i](); // Exit menu after selecting an action
             }
           }
