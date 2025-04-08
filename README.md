@@ -8,6 +8,7 @@ Online:
 - PauseMenu in online
 - more graceful disconnect
 - Update win screen on loser's side immediately
+- make a release and publish the game somehow
 
 [Hex](https://en.wikipedia.org/wiki/Hex_(board_game)) is a finite, 2-player perfect information game, and an abstract strategy game. Players attempt to connect opposite sides of a (traditionally) 11x11 rhombus-shaped board made of hexagonal cells. This an application where you can play Hex written in C++ using SFML.
 
