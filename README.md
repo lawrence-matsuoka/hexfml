@@ -18,6 +18,8 @@ Disclaimer: This is by no means an analysis of Hex and certainly the messiest co
 
 There are many areas of the code that are disorganized, as well as some code that I learned how to organize better throughout the process (such as encapsulating sounds in their own class). I was unfamiliar with C++ and this was an invaluable learning experience and I can definitely see why this language is used in production. Of course, I still need to practice quite a bit, but it was really cool feeling the difference in productivity between C and C++, which was to be expected with dabbling into graphical libraries and game dev. 
 
+Something I totally forgot about until after most of this project was done is [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html) which definitely could've helped me in keeping my code organized rather than the let's call it "functional" approach I took. So as a reference for future projects I will embed that link here. 
+
 ## Learning outcomes
 - C++
 - Game development
